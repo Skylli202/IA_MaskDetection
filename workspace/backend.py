@@ -30,8 +30,3 @@ def filenameToFullPath(filename, dataset=""):
                 return config.IMG_PATHS[0] + '/' + filename
             else:
                 return config.IMG_PATHS[1] + '/' + filename
-
-
-
-        #
-
