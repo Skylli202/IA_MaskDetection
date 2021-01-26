@@ -69,6 +69,7 @@ import model
 import config
 import camera
 import cartucho
+import backend
 
 """ Functions imports """
 
@@ -80,4 +81,5 @@ import cartucho
 if __name__ == '__main__':
     # print("KERAS OBJECT DETECION\n     MASK DETECTOR\nElouan GOUINGUENET\nJérome MASSARD\nESIREM 5A ILC 2021/2021")
     # model.cartucho_evaluate('test', True)
-    CLI.mainCLI()
+    # CLI.mainCLI()
+    print(backend.filenameToFullPath('0b1f1f1303030101.jpg', 'test'))

@@ -23,6 +23,15 @@ def filenameToFullPath(filename, dataset=""):
         imgs_path = config.IMG_PATHS[config.DATASETS_NAMES.index(dataset)]
         img_path = imgs_path + "/" + filename
 
-        # TODO: ajouter une vérification, sait-on jamais que l'utilisateur passe le mauvais dataset en paramètre
+        if os.path.exists(img_path):
+            return img_path
+        else:
+            if config.DATASETS_NAMES.index(dataset):
+                return config.IMG_PATHS[0] + '/' + filename
+            else:
+                return config.IMG_PATHS[1] + '/' + filename
 
-    return img_path
+
+
+        #
+
