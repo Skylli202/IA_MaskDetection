@@ -2,11 +2,13 @@
 import cv2
 import time
 import numpy as np
+import pathlib
 
 """ Homemade libs """
 import draw
 import model
 import config
+import CLI_backend as clib
 
 """ Functions imports """
 
@@ -24,7 +26,7 @@ def detect_cam_port():
     print(all_camera_idx_available)
     return
 
-
+# TODO: rendre l'emplacement d'enregistrement de la vidéo paramétrable
 def video(show_fps=True, mirror=True, record=False):
     cap = cv2.VideoCapture(700)
 
@@ -43,8 +45,19 @@ def video(show_fps=True, mirror=True, record=False):
         new_frame_time = 0
 
     if record:
+        file_path = 'main_output/outpy.mp4'
+        # TODO : implémenter une vérification
+        # if pathlib.Path.exists(file_path):
+        #     if not clib.askUserYesNo("Le fichier existe déjà, êtes vous sur de voulez continuer ?\n"
+        #                       "Le fichier existant sera réécrit, et donc perdu. (Y/N)\n"
+        #                       "  Y : continuer, réécrire le fichier"
+        #                       "  N : met fin au programme"):
+        #         print("Fin de la vidéo.")
+        #         cap.release()
+        #         cv2.destroyAllWindows()
+        #         return
         # video_writer = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10,(frame_width, frame_height))
-        video_writer = cv2.VideoWriter('main_output/outpy.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width, frame_height))
+        video_writer = cv2.VideoWriter(file_path, cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width, frame_height))
 
     while True:
         ret, frame = cap.read()
@@ -77,7 +90,7 @@ def video(show_fps=True, mirror=True, record=False):
             break
 
     cap.release()
-    video_writer.release()
-
+    if record:
+        video_writer.release()
     cv2.destroyAllWindows()
     return

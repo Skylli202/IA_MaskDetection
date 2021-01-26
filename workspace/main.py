@@ -43,8 +43,8 @@
 import os
 # os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
 
-import tensorflow as tf
-gpus = tf.config.experimental.list_physical_devices('GPU')
+# import tensorflow as tf
+# gpus = tf.config.experimental.list_physical_devices('GPU')
 # print(gpus)
 # tf.config.experimental.set_virtual_device_configuration(gpus[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=1024)])
 # if gpus:
@@ -64,6 +64,7 @@ gpus = tf.config.experimental.list_physical_devices('GPU')
 # session = InteractiveSession(config=config)
 
 """ Homemade libs """
+import CLI
 import model
 import config
 import camera
@@ -77,6 +78,6 @@ import cartucho
 
 
 if __name__ == '__main__':
-    print("KERAS OBJECT DETECION\n     MASK DETECTOR\nElouan GOUINGUENET\nJérome MASSARD\nESIREM 5A ILC 2021/2021")
-    model.cartucho_evaluate('test')
-
+    # print("KERAS OBJECT DETECION\n     MASK DETECTOR\nElouan GOUINGUENET\nJérome MASSARD\nESIREM 5A ILC 2021/2021")
+    # model.cartucho_evaluate('test', True)
+    CLI.mainCLI()

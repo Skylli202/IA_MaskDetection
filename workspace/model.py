@@ -1,11 +1,15 @@
+""" Python libs """
 import os
 import cv2
 import numpy as np
 
+""" Homemade libs """
 import draw
 import config
+import backend
 import cartucho as mAP
 
+""" Functions imports """
 from keras_retinanet import models
 from keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image
 
@@ -16,30 +20,25 @@ def load_model():
     return model
 
 
-def inf_img(filename, dataset="", cartucho=False, output=''):
-    if dataset == "":
-        for IMG_PATH in config.IMG_PATHS:
-            lstdir = os.listdir(IMG_PATH)
-            if filename in lstdir:
-                img_path = IMG_PATH + "/" + filename
-                break
-            else:
-                img_path = ""
-
-        if img_path == "":
-            print("Image introuvable..")
-            return
-    else:
-        imgs_path = config.IMG_PATHS[config.DATASETS_NAMES.index(dataset)]
-        img_path = imgs_path + "/" + filename
+def inf_img(filename, dataset="", preprocess=False, cartucho=False, output=''):
+    img_path = backend.filenameToFullPath(filename, dataset)
 
     my_model = load_model()
 
     # img_path = ""
     img = read_image_bgr(img_path)
+
+    if preprocess:
+        img = preprocess_image(img)
+        img, scale = resize_image(img)
+
     deep_cp_img = img.copy()
     deep_cp_img = cv2.cvtColor(deep_cp_img, cv2.COLOR_RGB2RGBA)
+
     boxes, scores, labels = my_model.predict_on_batch(np.expand_dims(img, axis=0))
+
+    if preprocess:
+        boxes = boxes/scale
 
     deep_cp_img = draw.draw_boxes(deep_cp_img, boxes, scores, labels)
 
@@ -53,7 +52,7 @@ def inf_img(filename, dataset="", cartucho=False, output=''):
     return
 
 
-def cartucho_evaluate(dataset):
+def cartucho_evaluate(dataset, preprocess=False, verbose=False):
     imgs_path = config.IMG_PATHS[config.DATASETS_NAMES.index(dataset)]
 
     img_lst = os.listdir(imgs_path)
@@ -67,11 +66,21 @@ def cartucho_evaluate(dataset):
         # inf_img(img, dataset, True)
 
         img = read_image_bgr(img_path)
+
+        if preprocess:
+            img = preprocess_image(img)
+            img, scale = resize_image(img)
+
         boxes, scores, labels = my_model.predict_on_batch(np.expand_dims(img, axis=0))
+
+        if preprocess:
+            boxes = boxes/scale
+
         mAP.gen_detection_results_file(img_path.split('/')[-1], boxes, scores, labels)
         img_done += 1
 
-        if img_done % 10 == 0:
-            print("img done: " + str(img_done))
+        if verbose:
+            if img_done % 10 == 0:
+                print("Image inférée: " + str(img_done) + '/' + str(len(img_lst)))
 
     return
