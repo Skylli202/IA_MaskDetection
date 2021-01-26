@@ -3,7 +3,7 @@ import CLI_backend as cli
 RUN = True
 
 optionsValues = {
-    0: "  0. Quitter", # TODO
+    0: "  0. Quitter", # OK!
     1: "  1. Inférer une image", # OK!
     2: "  2. Inférer le flux caméra", # OK!
     3: "  3. Evaluation by cartucho", # OK!
@@ -12,8 +12,7 @@ optionsValues = {
 
 def processUserInput(usr_input):
     if usr_input == '0':
-        RUN = False
-        print(RUN)
+        exit()
     elif usr_input == '1':
         cli.run_inferer_img()
     elif usr_input == '2':
