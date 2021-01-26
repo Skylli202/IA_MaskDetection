@@ -41,6 +41,7 @@
 
 """ Python libs """
 import os
+import subprocess
 # os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
 
 # import tensorflow as tf
@@ -81,5 +82,4 @@ import backend
 if __name__ == '__main__':
     # print("KERAS OBJECT DETECION\n     MASK DETECTOR\nElouan GOUINGUENET\nJérome MASSARD\nESIREM 5A ILC 2021/2021")
     # model.cartucho_evaluate('test', True)
-    # CLI.mainCLI()
-    print(backend.filenameToFullPath('0b1f1f1303030101.jpg', 'test'))
+    CLI.mainCLI()

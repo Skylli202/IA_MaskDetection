@@ -8,6 +8,7 @@ optionsValues = {
     2: "  2. Inférer le flux caméra", # OK!
     3: "  3. Evaluation by cartucho", # OK!
     4: "  4. In-build Keras evaluation", # TODO
+    5: "  5. Modifier la valeur de threshold", # TODO
 }
 
 def processUserInput(usr_input):
@@ -21,6 +22,8 @@ def processUserInput(usr_input):
         cli.run_eval_cartucho()
     elif usr_input == '4':
         cli.run_eval_keras()
+    elif usr_input == '5':
+        cli.run_edit_threshold()
     else:
         print("Erreur: should be unreachable")
         # Exception("usr_input value not handled.")
@@ -57,9 +60,7 @@ def processOptionsChoice(usr_input):
 
 def mainCLI():
     while RUN:
-        print(RUN)
         printHeader()
         printOptions()
         usr_input = askOptions()
         processOptionsChoice(usr_input)
-        print(RUN)

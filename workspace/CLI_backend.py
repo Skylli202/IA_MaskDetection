@@ -1,10 +1,12 @@
 """ Python libs """
 import os
 import time
+import subprocess
 
 """ Homemade libs """
 import CLI
 import model
+import config
 import camera
 import backend
 
@@ -135,16 +137,50 @@ def run_eval_cartucho():
 
     print("Lancement de la création des fichiers \"dectection-results\"...")
     kerasFlood()
+    database = 'test'
     start_eval_time = time.time()
-    model.cartucho_evaluate('test', preprocess, True)
+    model.cartucho_evaluate(database, preprocess, True)
     end_eval_time = time.time()
 
-    print("\n\n\nL'inférence a mit {:.3f} secondes.".format(float(end_eval_time - start_eval_time)))
+    inference_time = float(end_eval_time - start_eval_time)
+    print("\n\n\nL'inférence a mit {:.3f} secondes.".format(inference_time))
+
+    nb_img = len(os.listdir(config.TEST_IMG_PATH))
+    print("Soit {:.3f} secondes par images".format(inference_time/nb_img))
+
     space()
 
-    # TODO: run cartucho.py with subprocess
-
+    cmd = "python ../cartucho/cartucho.py"
+    os.system(cmd)
+    space()
 
 def run_eval_keras():
-    print("Je dois run l'eval de fizyr/keras")
-    # TODO: subprocess keras
+    #  Rappel cmd =
+    # python
+    # C:\Users\Skylli\PycharmProjects\IA_MaskDetection\keras-retinanet\keras_retinanet\bin\evaluate.py
+    # --backbone resnet50
+    # --gpu 0
+    # csv C:\Users\Skylli\PycharmProjects\IA_MaskDetection\datasets\CSV\TEST_annotations.csv
+    # C:\Users\Skylli\PycharmProjects\IA_MaskDetection\datasets\CSV\labels.csv
+    # C:\Users\Skylli\PycharmProjects\IA_MaskDetection\models\resnet50_csv_17.h5
+    # --convert-model
+
+    fizyr_eval = os.path.abspath("../keras-retinanet/keras_retinanet/bin/evaluate.py")
+    backbone = "--backbone resnet50"
+    gpu = "--gpu 0"
+    csv = "csv " + os.path.abspath(config.TEST_CSV) + " " + os.path.abspath(config.LABELS_CSV)
+    model = os.path.abspath(config.MODEL_PATH) + " --convert-model"
+
+    cmd = "python " + fizyr_eval + " " + backbone + " " + gpu + " " + csv + " " + model
+
+    kerasFlood()
+    os.system(cmd)
+    space()
+
+def run_edit_threshold():
+    t = float(input("Quel valeur de threshold souhaitez-vous ?\n"))
+    while t < 0.0 or t > 1.0:
+        t = float(input("Erreur, le threshold doit-être compris entre 0 et 1.\n"))
+    backend.setThreshold(t)
+    print("\nLa nouvelle valeur de threshold a été appliqué, \nle nouveau threshold est de : {}".format(config.THRESHOLD))
+    space()

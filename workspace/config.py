@@ -1,5 +1,5 @@
 """ GENERAL """
-THRESHOLD = 0.0
+THRESHOLD = 0.5
 
 """ CSV """
 TRAIN_CSV = "../datasets/CSV/TRAIN_annotations.csv"
