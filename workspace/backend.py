@@ -10,8 +10,7 @@ def filenameToFullPath(filename, dataset=""):
         for IMG_PATH in config.IMG_PATHS:
             lstdir = os.listdir(IMG_PATH)
             if filename in lstdir:
-                img_path = IMG_PATH + "/" + filename
-                break
+                return IMG_PATH + "/" + filename
             else:
                 img_path = ""
 
