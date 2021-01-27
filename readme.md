@@ -1,3 +1,5 @@
+Le rapport se situe à l'emplacement : `workspace/docs/CR_ProjetMaskDetection_GOUINGUENET_MASSARD.pdf`.
+
 # Déploiement
 
 ```bash
