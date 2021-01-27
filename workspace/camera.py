@@ -28,7 +28,7 @@ def detect_cam_port():
 
 # TODO: rendre l'emplacement d'enregistrement de la vidéo paramétrable
 def video(show_fps=True, mirror=True, record=False):
-    cap = cv2.VideoCapture(700)
+    cap = cv2.VideoCapture(config.CAMERA_PORT)
 
     if not cap.isOpened():
         print(
